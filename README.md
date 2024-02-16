@@ -40,19 +40,19 @@ This table is used to store registered members. In this table, the primary key i
 _Because of the large size of this table, it will be split into multiple grids for display purposes, just keep in mind that they are all part of the same table with 1 primary key._
 
 | guildID    | guildName  | staffRole  | adminRole  | 
-| ---------- | ---------- | ---------- | ---------- |
+| :--------: | :--------: | :--------: | :--------: |
 | BigInteger | String(36) | BigInteger | BigInteger |
 
 | guestRole | guildMemberRole | unverifiedRole | acceptedRole | mvpRole | developerRole |
-| --------- | --------------- | -------------- | ------------ | ------- | ------------- |
+| :-------: | :-------------: | :------------: | :----------: | :-----: | :-----------: |
 | BigInteger | BigInteger | BigInteger | BigInteger | BigInteger | BigInteger |
 
 | logChannel | messageLogChannel | waitingListChannel | applicationSubmissionsChannel |
-| ---------- | ----------------- | ------------------ | ----------------------------- |
+| :--------: | :---------------: | :----------------: | :---------------------------: |
 | BigInteger | BigInteger | BigInteger | BigInteger |
 
 | monitoredGuilds | weekOneGexp | weekTwoGexp | weekThreeGexp | apiKey |
-| --------------- | ----------- | ----------- | ------------- | ------ |
+| :-------------: | :---------: | :---------: | :-----------: | :----: |
 | String(999) | JSON | JSON | JSON| String(36)
 
 
