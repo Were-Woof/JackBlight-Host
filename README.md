@@ -188,6 +188,12 @@ This cog is in the ``moderation.py`` file. It contains commands related to moder
 
 **Role_Syncing**
 
+This cog is in the ``role_syncing.py`` file. It is used to ensure that all registered members have the appropriate roles based off of their guild position. Currently, the cog will start the role sync process every time a message is sent if the process is not already running.
+
+The only command within this cog is ``/sync``, which can be used by any registered member as a way to gain the appropriate roles without waiting for the automatic role sync system. Ideally, a member will never have to use this command.
+
 **Tickets**
+
+This cog is in the ``tickets.py`` file. Currently, this cog contains no important features, with its only command being ``/create-panel``. The ``/create-panel`` command creates a new panel within the ``PANELS`` database table, which is currently unused.
 
 **Verification**
