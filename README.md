@@ -130,6 +130,32 @@ Each cog has its own function for checking command permissions, these are named 
 
 #### Applications
 
+This cog is in the ``applications.py`` file and handles all guild applications. Please note that guild requirements are not defined in this cog and are defined in ``config.py``.
+
+Within the ``applications.py`` file are a few classes:
+
+
+``ApplyButtons`` is a class that defines how the application buttons behave. As the bot uses a button to allow users to apply, this class is critical to the bot's functionality. When the button is pressed, a few steps are taken:
+
+- The bot checks if the user has pressed the button too recently, if they have, the application fails. This system is in place to prevent duplicate applications.
+- The bot checks if the user is registered, if they are not, the application fails.
+- The bot checks if the user already has an application open within the database, if they do, the application fails.
+- The bot collects the user's ingame stats.
+- If the user meets requirements, they are given the ``acceptedRole`` and are placed on the waitinglist.
+- If the user does not meet requirements, a guild application is registered in the database's ``TICKETS`` panel with a panelName of "Guild Applications". Additionally the bot creates a discord channel for the application where it displays the users stats.
+
+``Applications`` is the cog's main class. It contains the following commands (all of which require the user to have either the ``staffRole``, ``adminRole`` or ``developerRole``):
+
+- ``/set-apply-msg`` This command sends the application message and the application button.
+
+- ``/accept`` This command accepts the user who owns a specified application, this gives the user the ``acceptedRole``, adds them to the waitinglist and deletes the application. If an invalid application is selected, the command will fail. The default application is the channel the command is run in. 
+
+- ``/deny`` This command denies an application, deleting it. If an invalid application is selected, the command will fail. The default application is the channel the command is run in. 
+
+- ``b!accept`` This command accepts the user who owns a specified application, this gives the user the ``acceptedRole``, adds them to the waitinglist and deletes the application. If an invalid application is selected, the command will fail. The default application is the channel the command is run in. 
+
+- ``b!deny`` This command denies an application, deleting it. If an invalid application is selected, the command will fail. The default application is the channel the command is run in. 
+
 #### Developer_Commands
 
 This cog contains commands designed for developer/admin use. With the exception of ``/lookup``, ``/ping`` and ``/status``, all commands within this cog require users to have either the ``developerRole`` or the ``adminRole``.
