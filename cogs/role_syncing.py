@@ -13,12 +13,13 @@ from hypixelAPI import hypixelAPI
 class Role_Syncing(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.Cog.listener()
     async def on_ready(self):
         await self.bot.tree.sync()
         devLogging.info(msg='Cog finished loading', module=__name__)
 
+    
     @app_commands.command(name="sync")
     async def sync(self, interaction: discord.Interaction):
         await interaction.response.defer()
@@ -31,11 +32,7 @@ class Role_Syncing(commands.Cog):
             await asyncio_sleep(5)
             await response.delete()
             return
-        
         member_uuid = member_info.uuid
-
-
-
         await interaction.user.remove_roles(self.bot.unverifiedRole, reason="Sync Command")
         for member in guild_members:
             if member['uuid'] == member_uuid:
@@ -53,8 +50,6 @@ class Role_Syncing(commands.Cog):
         await response.delete()
         
 
-
-
     def get_delay(self, seconds=0, minutes=15, hours=0, days=0):
         return seconds + (minutes*60) + (hours*3600) + (days*86400)
 
@@ -64,7 +59,6 @@ class Role_Syncing(commands.Cog):
             return
         await self.sync_roles()
 
-    
     
     async def sync_roles(self):
         self.bot.syncing = True
@@ -106,23 +100,16 @@ class Role_Syncing(commands.Cog):
                     for memb in raw_member_list:
                         if memb['uuid'] == member.uuid:
                             devLogging.info(msg=f'UUID match found for member: {member.discordID}', module=__name__)
-                            #await discord_member.add_roles(self.bot.guildMemberRole, reason="Blight Role Sync")
-                            #await discord_member.remove_roles(self.bot.guestRole, self.bot.acceptedRole, reason="Blight Role Sync")
-
                             if memb['rank'] == "MVP":
                                 apply_mvps.append(member.discordID)
                                 devLogging.info(msg=f'Confirmed member {member.discordID} as MVP', module=__name__)
-                                #await discord_member.add_roles(self.bot.mvpRole, reason="Blight Role Sync")
                             else:
                                 apply_guild_members.append(member.discordID)
-                                #await discord_member.remove_roles(self.bot.mvpRole, reason="Blight Role Sync")
                             break
                     else:
                         devLogging.warning(msg=f'Member {member.discordID} showed as in guild but cannot find uuid match')
                 else:
                     apply_guest.append(member.discordID)
-                    #await discord_member.add_roles(self.bot.guestRole, reason="Blight Role Sync")
-                    #await discord_member.remove_roles(self.bot.guildMemberRole, self.bot.mvpRole, reason="Blight Role Sync")
 
             if len(apply_guild_members) == 0:
                 devLogging.warning("Role sync failed as no members shown as in guild", module=__name__)
@@ -141,7 +128,7 @@ class Role_Syncing(commands.Cog):
                     await memb.remove_roles(self.bot.mvpRole, reason="Blight Role Sync")
                 embed = discord.Embed(description=f"Applied guild member roles to {memb.mention}", colour=discord.Colour.blue())
                 await self.bot.logChannel.send(embed=embed)
-                #await memb.remove_roles(self.bot.guestRole, self.bot.acceptedRole, self.bot.mvpRole, reason="Blight Role Sync")
+
             devLogging.info(f"Applying roles to {len(apply_mvps)} mvps", module=__name__)
             for member in apply_mvps:
                 await asyncio_sleep(0.1)
@@ -156,87 +143,24 @@ class Role_Syncing(commands.Cog):
                     await memb.remove_roles(self.bot.acceptedRole, reason="Blight Role Sync")
                 embed = discord.Embed(description=f"Applied mvp roles to {memb.mention}", colour=discord.Colour.blue())
                 await self.bot.logChannel.send(embed=embed)
-                #await memb.add_roles(self.bot.guildMemberRole, self.bot.mvpRole, reason="Blight Role Sync")
-                #await memb.remove_roles(self.bot.guestRole, self.bot.acceptedRole, reason="Blight Role Sync")
+
             devLogging.info(f"Applying roles to {len(apply_guest)} guests", module=__name__)
             for member in apply_guest:
                 await asyncio_sleep(0.1)
                 memb = discord.utils.get(self.bot.blight.members, id=member)
                 if self.bot.guestRole not in memb.roles:
                     await memb.add_roles(self.bot.guestRole, reason="Blight Role Sync")
-                #await memb.add_roles(self.bot.guestRole, reason="Blight Role Sync")
                 if self.bot.guildMemberRole in memb.roles:
                     await memb.remove_roles(self.bot.guildMemberRole, reason="Blight Role Sync")
                 if self.bot.mvpRole in memb.roles:
                     await memb.remove_roles(self.bot.mvpRole, reason="Blight Role Sync")
                 embed = discord.Embed(description=f"Applied guest roles to {memb.mention}", colour=discord.Colour.blue())
                 await self.bot.logChannel.send(embed=embed)
-                #await memb.remove_roles(self.bot.guildMemberRole, self.bot.mvpRole, reason="Blight Role Sync")
-
-
             else:
                 self.bot.syncing = False
                 devLogging.info('Role sync finished without breaking', module=__name__)
         except Exception as error:
             devLogging.error(msg=f'Role sync failed with error: {error}', module=__name__)
-            await asyncio_sleep(5)
-            self.bot.syncing = False
-
-
-                
-
-        
-        
-    async def old_sync_roles(self):
-        self.bot.syncing = True
-        try:
-            devLogging.info("Starting member role sync", module=__name__)
-
-            blight = self.bot.get_guild(server_id)
-            await asyncio_sleep(1)
-            await asyncio_sleep(1)
-
-            guild_members = await hypixelAPI.get_guild_members(await databaseManager.fetch_guild_name())
-            await asyncio_sleep(1)
-            member_list = []
-            for member in guild_members:
-                await asyncio_sleep(0.1)
-                member_list.append(member['uuid'])
-            
-
-
-            for member in blight.members:
-                await asyncio_sleep(1)
-                member_info = await databaseManager.fetch_member(member.id)
-                if member_info == None:
-                    devLogging.info(msg=f'Skipping unregistered member: {member.id}', module=__name__)
-                    continue
-                
-                if member_info.uuid in member_list:
-                    await asyncio_sleep(0.25)
-                    devLogging.info(msg=f'Found member {member.id} in guild', module=__name__)
-                    for i in guild_members:
-                        if member_info.uuid == i['uuid']:
-                            devLogging.info(msg=f'UUID match found for member: {member.id}', module=__name__)
-                            await member.add_roles(self.bot.guildMemberRole, reason="Blight Role Sync")
-                            await member.remove_roles(self.bot.guestRole, self.bot.acceptedRole, reason="Blight Role Sync")
-
-                            if guild_members[i]["rank"] == "MVP":
-                                devLogging.info(msg=f'Confirmed member {member.id} as MVP', module=__name__)
-                                await member.add_roles(self.bot.mvpRole, reason="Blight Role Sync")
-
-                            break
-                else:
-                    await member.add_roles(self.bot.guestRole, reason="Blight Role Sync")
-                    await member.remove_roles(self.bot.guildMemberRole, reason="Blight Role Sync")
-            else:
-                self.bot.syncing = False
-                print('Role sync finished without breaking')
-        except Exception as error:
-            for i in error:
-                print(i)
-                print(error)
-                print('ROLE SYNC ERROR')
             await asyncio_sleep(5)
             self.bot.syncing = False
                 
