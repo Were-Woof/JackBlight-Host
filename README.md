@@ -121,6 +121,7 @@ The convention of this logging system is:
 _As of the time of writing, this functionality is not fully implemented throughout the bot, as such many events that should be logged are not. This is across all of the categories of logging._
 
 
+
 ### Cogs
 
 All cogs are stored within the cogs folder. Upon startup, the bot will attempt to load every _python_ file within the cogs folder as a cog. Each cog controls one aspect of the bot and should be removable without preventing any other cogs from functioning. 
@@ -144,6 +145,7 @@ Within the ``applications.py`` file are a few classes:
 - If the user meets requirements, they are given the ``acceptedRole`` and are placed on the waitinglist.
 - If the user does not meet requirements, a guild application is registered in the database's ``TICKETS`` panel with a panelName of "Guild Applications". Additionally the bot creates a discord channel for the application where it displays the users stats.
 
+
 ``Applications`` is the cog's main class. It contains the following commands (all of which require the user to have either the ``staffRole``, ``adminRole`` or ``developerRole``):
 
 - ``/set-apply-msg`` This command sends the application message and the application button.
@@ -155,6 +157,7 @@ Within the ``applications.py`` file are a few classes:
 - ``b!accept`` This command accepts the user who owns a specified application, this gives the user the ``acceptedRole``, adds them to the waitinglist and deletes the application. If an invalid application is selected, the command will fail. The default application is the channel the command is run in. 
 
 - ``b!deny`` This command denies an application, deleting it. If an invalid application is selected, the command will fail. The default application is the channel the command is run in. 
+
 
 #### Developer_Commands
 
@@ -193,6 +196,7 @@ This cog is not currently used.
 
 This cog is in the ``logging.py`` file. It is made up of event listeners. Currently, these event listeners only include message events such as deletes and edits. When one of these events occurs, it is sent to the ``messageLogChannel``.
 
+
 #### Moderation
 
 This cog is in the ``moderation.py`` file. It contains commands related to moderation and managing the server. All commands within this cog require the user to have either the ``staffRole``, ``adminRole`` or ``developerRole``.
@@ -211,14 +215,33 @@ This cog is in the ``moderation.py`` file. It contains commands related to moder
 
 - ``/forcelink`` This command will register a user within the database. A _valid_ username must be provided with this command, however the standard verification check is skipped with this command. This command will also apply the appropriate roles based on the username.
 
+
 #### Role_Syncing
 
 This cog is in the ``role_syncing.py`` file. It is used to ensure that all registered members have the appropriate roles based off of their guild position. Currently, the cog will start the role sync process every time a message is sent if the process is not already running.
 
 The only command within this cog is ``/sync``, which can be used by any registered member as a way to gain the appropriate roles without waiting for the automatic role sync system. Ideally, a member will never have to use this command.
 
+
 #### Tickets
 
 This cog is in the ``tickets.py`` file. Currently, this cog contains no important features, with its only command being ``/create-panel``. The ``/create-panel`` command creates a new panel within the ``PANELS`` database table, which is currently unused.
 
+
 #### Verification
+
+This cog is within the ``verification.py`` file. It is used to handle member verification and registers members into the database.
+
+The ``verification.py`` file contains a few classes:
+
+
+``VerifyButtons`` is a class that defines how the verification buttons behave. In this class, two buttons are handled. ``verify`` and ``unverify``. 
+
+If the ``verify`` button is pressed, it sends the a modal controlled by the ``VerifyModal`` class.
+
+If the ``unverify`` button is pressed, the bot checks if the user is verified. If the user is verified, their data is deleted from the database.
+
+
+``VerifyModal``
+
+``Verification``
