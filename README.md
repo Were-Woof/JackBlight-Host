@@ -128,10 +128,9 @@ All cogs are stored within the cogs folder. Upon startup, the bot will attempt t
 Each cog has its own function for checking command permissions, these are named ``permission_check`` for interaction commands and ``legacy_permission_check`` for context commands (also known as prefix commands).
 
 
-**Applications**
+#### Applications
 
-
-**Developer_Commands**
+#### Developer_Commands
 
 This cog contains commands designed for developer/admin use. With the exception of ``/lookup``, ``/ping`` and ``/status``, all commands within this cog require users to have either the ``developerRole`` or the ``adminRole``.
 
@@ -154,21 +153,21 @@ Currently, the most important commands within this cog are:
 - ``b!eval`` This command executes a block of code entered by the user. Only one code block can be used.
 
 
-**Games**
+#### Games
 
 This cog is within the ``games.py`` file. Holding mostly context commands, this cog is for public entertainment commands/events, an example being ``b!duck``.
 
 As all commands in this cog are non-critical and are available through the ``b!help`` command, I will not list them here.
 
-**Leaderboards**
+#### Leaderboards
 
 This cog is not currently used.
 
-**Logging**
+#### Logging
 
 This cog is in the ``logging.py`` file. It is made up of event listeners. Currently, these event listeners only include message events such as deletes and edits. When one of these events occurs, it is sent to the ``messageLogChannel``.
 
-**Moderation**
+#### Moderation
 
 This cog is in the ``moderation.py`` file. It contains commands related to moderation and managing the server. All commands within this cog require the user to have either the ``staffRole``, ``adminRole`` or ``developerRole``.
 
@@ -186,14 +185,14 @@ This cog is in the ``moderation.py`` file. It contains commands related to moder
 
 - ``/forcelink`` This command will register a user within the database. A _valid_ username must be provided with this command, however the standard verification check is skipped with this command. This command will also apply the appropriate roles based on the username.
 
-**Role_Syncing**
+#### Role_Syncing
 
 This cog is in the ``role_syncing.py`` file. It is used to ensure that all registered members have the appropriate roles based off of their guild position. Currently, the cog will start the role sync process every time a message is sent if the process is not already running.
 
 The only command within this cog is ``/sync``, which can be used by any registered member as a way to gain the appropriate roles without waiting for the automatic role sync system. Ideally, a member will never have to use this command.
 
-**Tickets**
+#### Tickets
 
 This cog is in the ``tickets.py`` file. Currently, this cog contains no important features, with its only command being ``/create-panel``. The ``/create-panel`` command creates a new panel within the ``PANELS`` database table, which is currently unused.
 
-**Verification**
+#### Verification
