@@ -166,9 +166,25 @@ This cog is not currently used.
 
 **Logging**
 
-This cog in the ``logging.py`` file. It is made up of event listeners. Currently, these event listeners only include message events such as deletes and edits. When one of these events occurs, it is sent to the ``messageLogChannel``.
+This cog is in the ``logging.py`` file. It is made up of event listeners. Currently, these event listeners only include message events such as deletes and edits. When one of these events occurs, it is sent to the ``messageLogChannel``.
 
 **Moderation**
+
+This cog is in the ``moderation.py`` file. It contains commands related to moderation and managing the server. All commands within this cog require the user to have either the ``staffRole``, ``adminRole`` or ``developerRole``.
+
+- ``/purge`` This command deletes a number of messages determined by the user.
+
+- ``/role`` This command toggles a specified role from a specified user. If the user has the role, it removes it, if the user doesn't have the role, the role is given. Users of this command cannot give/remove their highest role or above with this command.
+
+- ``/kick`` This command kicks a member from the server. Users of this command cannot kick members with their highest role or above with this command.
+
+- ``/kick`` This command kicks a member from the server. Users of this command cannot kick members with their highest role or above with this command.
+
+- ``/mute`` This command times out a user for a specified amount of time. Users of this command cannot mute members with their highest role or above with this command.
+
+- ``/poll`` This command sends a poll with at least 2 options. Options are made by placing the ``~`` character between options within the options field. The bot will auto react for each option.
+
+- ``/forcelink`` This command will register a user within the database. A _valid_ username must be provided with this command, however the standard verification check is skipped with this command. This command will also apply the appropriate roles based on the username.
 
 **Role_Syncing**
 
